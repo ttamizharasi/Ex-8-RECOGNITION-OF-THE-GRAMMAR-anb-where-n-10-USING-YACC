@@ -16,58 +16,58 @@ To write a YACC program to recognize the grammar anb where n>=10.
 Program: ex8.l file
 ```
 %{
-/* Definition section */
+/* Lex Program for
+   anb (n>=10) */
 #include "y.tab.h"
 %}
 
-/* Rule Section */
-%%
-[aA] {return A;}
-[bB] {return B;}
-\n {return NL;}
-. {return yytext[0];}
 %%
 
-int yywrap()
-{
+a { return A; }
+b { return B; }
+\n { return '\n'; }
+
+%%
+
+int yywrap() {
     return 1;
 }
 ```
 Program: ex8.y file
 ```
 %{
-/* Definition section */
-#include<stdio.h>
-#include<stdlib.h>
+/* YACC program for recognizing anb(n>=10) */
+#include <stdio.h>
 %}
 
-%token A B NL
+%token A B
 
-/* Rule Section */
-%%
-stmt: S NL { 
-    printf("valid string\n");
-    exit(0); 
-}
-;
-S: A S B |
-;
 %%
 
-int yyerror(char *msg)
-{
-    printf("invalid string\n"); 
-    exit(0);
-}
+stmt: A A A A A A A A A
+      anb '\n' { printf("\nValid string\n"); return 0; }
+    ;
 
-//driver code main()
-{
-    printf("enter the string\n"); 
+anb: A anb
+    | A B
+    ;
+
+%%
+
+int main() {
+    printf("\nEnter some valid string\n");
     yyparse();
+    return 0;
+}
+
+int yyerror(char *s) {
+    printf("\nInvalid string\n");
+    return 0; // Return 0 to indicate error handling
 }
 ```
 # OUTPUT
-![image](https://github.com/ttamizharasi/Ex-8-RECOGNITION-OF-THE-GRAMMAR-anb-where-n-10-USING-YACC/assets/119657317/d2509194-c8b7-4f28-b25a-ad75dab9546e)
+![image](https://github.com/ttamizharasi/Ex-8-RECOGNITION-OF-THE-GRAMMAR-anb-where-n-10-USING-YACC/assets/119657317/2b43df2e-1bdb-4659-b745-42c662754e44)
+![image](https://github.com/ttamizharasi/Ex-8-RECOGNITION-OF-THE-GRAMMAR-anb-where-n-10-USING-YACC/assets/119657317/cfb2f9bb-ec94-4dc0-be60-f8f7769e296b)
 
 # RESULT
 The YACC program to recognize the grammar anb where n>=10 is executed successfully and the output is verified.
